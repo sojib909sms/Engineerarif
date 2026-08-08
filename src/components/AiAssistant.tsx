@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, Send, X, Bot, User as UserIcon, Loader2, Phone, MessageSquare, ChevronRight, DraftingCompass, Calculator, CheckCircle2, ShieldCheck } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
 import { ENGINEER_INFO } from '../data/portfolioData';
 
 interface Message {
@@ -67,31 +66,24 @@ export const AiAssistant: React.FC<AiAssistantProps> = ({
 
     try {
       let aiReply = '';
-      const apiKey = process.env.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY;
 
-      if (apiKey) {
-        const ai = new GoogleGenAI({ apiKey });
-        const systemPrompt = `You are the official AI Assistant for MD Arif Mia, a Civil Engineering Designer & Construction Site Engineer based in Dhaka, Bangladesh (Uttara University B.Sc & NSU M.Sc student).
-He has 3+ years of core construction site experience (rebar checking, site layout, foundation inspection) and high-level AutoCAD 2D/3D & 3ds Max photorealistic rendering skills.
-Primary email: arif.mia02@uttarauniversity.edu.bd
-Phone/WhatsApp: 01568647919 / +8801568647919
+      const res = await fetch('/api/ai-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: textToSend }),
+      });
 
-Services Offered:
-- AutoCAD 2D Floor Plans & Permit Working Drawings ($120 - $300 / BDT rates)
-- AutoCAD 3D Building Models & Massing
-- 3ds Max V-Ray / Corona Exterior & Interior Renders ($250 - $450)
-- Construction Site Supervision, Rebar Checking & Field Quality
-- Structural Beam, Column, Slab & Foundation Detailing
-
-Always respond politely, helpfully, and professionally in BANGLA (or English if the user asks in English). Encourage the user to send their project details or contact Engineer Arif on WhatsApp at 01568647919.`;
-
-        const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash',
-          contents: `${systemPrompt}\n\nUser Question: ${textToSend}`
-        });
-
-        aiReply = response.text || 'ধন্যবাদ! আমি আপনার প্রশ্নটি পেয়েছি। বিস্তারিত জানতে ইঞ্জিনিয়ার মো: আরিফ মিয়ার হোয়াটসঅ্যাপে (০১৫৬৮৬৪৭৯১৯) যোগাযোগ করতে পারেন।';
+      if (res.ok) {
+        const data = await res.json();
+        aiReply = data.text || '';
       } else {
+        const data = await res.json().catch(() => ({}));
+        if (data.fallbackText) {
+          aiReply = data.fallbackText;
+        }
+      }
+
+      if (!aiReply) {
         // Fallback domain-aware responses
         const lower = textToSend.toLowerCase();
         if (lower.includes('autocad') || lower.includes('2d') || lower.includes('ড্রয়িং') || lower.includes('plan')) {

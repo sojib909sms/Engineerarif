@@ -23,7 +23,7 @@ export const Footer: React.FC<FooterProps> = ({
   };
 
   return (
-    <footer className="bg-slate-950 text-slate-400 border-t border-slate-800 relative pt-16 pb-12">
+    <footer className="bg-slate-950 text-slate-400 border-t border-slate-800 relative pt-16 pb-28 sm:pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Main Footer Grid */}
@@ -156,12 +156,12 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-300 font-mono">
-          <div>
+        <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-300 font-mono">
+          <div className="text-center sm:text-left">
             © {new Date().getFullYear()} {ENGINEER_INFO.name}. Civil Engineering Designer Portfolio.
           </div>
 
-          <div>
+          <div className="flex flex-col items-center sm:items-end gap-3">
             <button
               onClick={scrollToTop}
               className="p-2.5 rounded-xl bg-slate-900 hover:bg-blue-600 text-slate-300 hover:text-white border border-slate-800 transition-all flex items-center space-x-1 cursor-pointer"
@@ -170,22 +170,20 @@ export const Footer: React.FC<FooterProps> = ({
               <ArrowUp className="w-4 h-4" />
               <span>Back To Top</span>
             </button>
-          </div>
-        </div>
 
-        {/* Developed by MD ARIF - Facebook Link below Back To Top */}
-        <div className="pt-5 mt-2 border-t border-slate-900/60 text-center">
-          <a
-            href={ENGINEER_INFO.social.facebook}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-slate-400 hover:text-blue-300 transition-all bg-slate-900/90 hover:bg-slate-800 px-4 py-2 rounded-full border border-slate-800 hover:border-blue-500/50 shadow-md group cursor-pointer"
-            title="Open MD ARIF's Facebook Profile"
-          >
-            <span>Developed by</span>
-            <span className="text-blue-400 font-extrabold tracking-wider group-hover:underline">MD ARIF</span>
-            <ExternalLink className="w-3.5 h-3.5 text-blue-400 group-hover:scale-110 transition-transform" />
-          </a>
+            {/* Developed by MD ARIF - Facebook Link directly in the red circled area */}
+            <a
+              href={ENGINEER_INFO.social.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-slate-300 hover:text-blue-300 transition-all bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-full border border-slate-800 hover:border-blue-500/50 shadow-md group cursor-pointer"
+              title="Open MD ARIF's Facebook Profile"
+            >
+              <span>Developed by</span>
+              <span className="text-blue-400 font-extrabold tracking-wider group-hover:underline">MD ARIF</span>
+              <ExternalLink className="w-3.5 h-3.5 text-blue-400 group-hover:scale-110 transition-transform" />
+            </a>
+          </div>
         </div>
 
       </div>

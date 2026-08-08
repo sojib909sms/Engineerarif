@@ -161,7 +161,7 @@ export const Footer: React.FC<FooterProps> = ({
             © {new Date().getFullYear()} {ENGINEER_INFO.name}. Civil Engineering Designer Portfolio.
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div>
             <button
               onClick={scrollToTop}
               className="p-2.5 rounded-xl bg-slate-900 hover:bg-blue-600 text-slate-300 hover:text-white border border-slate-800 transition-all flex items-center space-x-1 cursor-pointer"
@@ -171,6 +171,21 @@ export const Footer: React.FC<FooterProps> = ({
               <span>Back To Top</span>
             </button>
           </div>
+        </div>
+
+        {/* Developed by MD ARIF - Facebook Link below Back To Top */}
+        <div className="pt-5 mt-2 border-t border-slate-900/60 text-center">
+          <a
+            href={ENGINEER_INFO.social.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-slate-400 hover:text-blue-300 transition-all bg-slate-900/90 hover:bg-slate-800 px-4 py-2 rounded-full border border-slate-800 hover:border-blue-500/50 shadow-md group cursor-pointer"
+            title="Open MD ARIF's Facebook Profile"
+          >
+            <span>Developed by</span>
+            <span className="text-blue-400 font-extrabold tracking-wider group-hover:underline">MD ARIF</span>
+            <ExternalLink className="w-3.5 h-3.5 text-blue-400 group-hover:scale-110 transition-transform" />
+          </a>
         </div>
 
       </div>

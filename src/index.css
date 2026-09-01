@@ -4,7 +4,7 @@
 @media print {
   @page {
     size: A4 portrait;
-    margin: 8mm 8mm;
+    margin: 8mm 8mm 8mm 8mm;
   }
 
   *,
@@ -28,17 +28,24 @@
     padding: 0 !important;
   }
 
-  /* Hide all background website sections and fixed UI components */
-  .no-print,
+  /* Completely hide all background website sections and fixed UI components */
+  header,
   nav,
   main,
   footer,
   aside,
   button,
+  .no-print,
   .cv-modal-header,
-  .fixed.bottom-6.right-6 {
+  .fixed.bottom-6.right-6,
+  #root > div > header,
+  #root > div > main,
+  #root > div > footer,
+  #root > div > div.fixed {
     display: none !important;
     visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
   }
 
   /* Keep the CV Modal visible and expanded to full natural height without overlays or clipping */
@@ -92,13 +99,68 @@
     box-shadow: none !important;
     border: 1px solid #cbd5e1 !important;
     border-radius: 0 !important;
+    background: #ffffff !important;
   }
 
-  /* Avoid cutting cards or sections across page boundaries */
-  .print-avoid-break,
-  .cv-section,
-  .cv-card,
+  /* Executive Header in Print */
   .cv-header-banner {
+    padding: 16px 20px !important;
+    background: #0f172a !important;
+    color: #ffffff !important;
+    border-bottom: 4px solid #f59e0b !important;
+    border-radius: 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .cv-header-flex {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+  }
+
+  .cv-contact-bar {
+    display: grid !important;
+    grid-template-columns: 1fr 1.3fr 1.1fr !important;
+    gap: 8px !important;
+    padding: 8px 20px !important;
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+    font-size: 11px !important;
+    border-bottom: 1px solid #334155 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Body Content container */
+  .cv-body-content {
+    padding: 16px 20px !important;
+  }
+
+  /* Sections flow naturally across pages without causing giant empty gaps */
+  .cv-section {
+    margin-bottom: 14px !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
+  .cv-section h3 {
+    margin-bottom: 6px !important;
+    padding-bottom: 3px !important;
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+    font-size: 12px !important;
+  }
+
+  /* Cards inside sections avoid splitting internally */
+  .cv-card {
+    margin-bottom: 8px !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
     break-inside: avoid !important;
     page-break-inside: avoid !important;
   }

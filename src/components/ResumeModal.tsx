@@ -900,7 +900,7 @@ Date: ________________________                     _____________________________
             
             {/* Executive Top Banner Header */}
             <div className="cv-header-banner print-avoid-break bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 text-white p-6 sm:p-8 border-b-4 border-amber-500">
-              <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
+              <div className="cv-header-flex flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
                 
                 <div className="space-y-2 text-center sm:text-left">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/60 border border-blue-700/50 text-blue-300 text-xs font-mono font-semibold">
@@ -953,7 +953,7 @@ Date: ________________________                     _____________________________
             </div>
 
             {/* Quick Contact Bar */}
-            <div className="bg-slate-900 text-slate-200 px-6 sm:px-8 py-3 border-b border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono">
+            <div className="cv-contact-bar bg-slate-900 text-slate-200 px-6 sm:px-8 py-3 border-b border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono">
               <div className="flex items-center justify-center sm:justify-start gap-2">
                 <Phone className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                 <a href={`tel:${cv.mobile}`} className="hover:text-amber-300 transition-colors">
@@ -973,10 +973,10 @@ Date: ________________________                     _____________________________
             </div>
 
             {/* Full Professional Body Layout in Standard Chronological Flow */}
-            <div className="p-6 sm:p-8 md:p-10 space-y-7">
+            <div className="cv-body-content p-6 sm:p-8 md:p-10 space-y-7">
               
               {/* 1. CAREER OBJECTIVE */}
-              <div className="cv-section print-avoid-break space-y-2">
+              <div className="cv-section space-y-2">
                 <h3 className="text-xs sm:text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2 border-b-2 border-blue-900 pb-1.5">
                   <Compass className="w-4 h-4 text-blue-700" />
                   CAREER OBJECTIVE
@@ -987,7 +987,7 @@ Date: ________________________                     _____________________________
               </div>
 
               {/* 2. CONFIDENCE & PROFESSIONAL STRENGTH */}
-              <div className="cv-section print-avoid-break space-y-2">
+              <div className="cv-section space-y-2">
                 <h3 className="text-xs sm:text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2 border-b-2 border-blue-900 pb-1.5">
                   <Award className="w-4 h-4 text-blue-700" />
                   CONFIDENCE & PROFESSIONAL STRENGTH
@@ -998,7 +998,7 @@ Date: ________________________                     _____________________________
               </div>
 
               {/* 3. PROFESSIONAL JOB EXPERIENCE (Reverse Chronological Timeline) */}
-              <div className="cv-section print-avoid-break space-y-3">
+              <div className="cv-section space-y-3">
                 <h3 className="text-xs sm:text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2 border-b-2 border-blue-900 pb-1.5">
                   <Briefcase className="w-4 h-4 text-blue-700" />
                   PROFESSIONAL JOB EXPERIENCE
@@ -1040,7 +1040,7 @@ Date: ________________________                     _____________________________
               </div>
 
               {/* 4. INDUSTRIAL ATTACHMENT */}
-              <div className="cv-section print-avoid-break space-y-3">
+              <div className="cv-section space-y-3">
                 <h3 className="text-xs sm:text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2 border-b-2 border-blue-900 pb-1.5">
                   <Building2 className="w-4 h-4 text-blue-700" />
                   INDUSTRIAL ATTACHMENT
@@ -1070,7 +1070,7 @@ Date: ________________________                     _____________________________
               </div>
 
               {/* 5. EDUCATIONAL QUALIFICATION */}
-              <div className="cv-section print-avoid-break space-y-3">
+              <div className="cv-section space-y-3">
                 <h3 className="text-xs sm:text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2 border-b-2 border-blue-900 pb-1.5">
                   <GraduationCap className="w-4 h-4 text-blue-700" />
                   EDUCATIONAL QUALIFICATION
@@ -1122,7 +1122,7 @@ Date: ________________________                     _____________________________
               </div>
 
               {/* 6. TECHNICAL & COMPUTER SKILLS */}
-              <div className="cv-section print-avoid-break space-y-3">
+              <div className="cv-section space-y-3">
                 <h3 className="text-xs sm:text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2 border-b-2 border-blue-900 pb-1.5">
                   <Laptop className="w-4 h-4 text-blue-700" />
                   TECHNICAL & COMPUTER SKILLS
@@ -1161,7 +1161,7 @@ Date: ________________________                     _____________________________
               </div>
 
               {/* 7. LANGUAGE PROFICIENCY */}
-              <div className="cv-section print-avoid-break space-y-3">
+              <div className="cv-section space-y-3">
                 <h3 className="text-xs sm:text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2 border-b-2 border-blue-900 pb-1.5">
                   <Globe className="w-4 h-4 text-blue-700" />
                   LANGUAGE PROFICIENCY
@@ -1192,10 +1192,10 @@ Date: ________________________                     _____________________________
               </div>
 
               {/* 8. PERSONAL INFORMATION & PERMANENT ADDRESS (Plotted at bottom) */}
-              <div className="cv-section print-avoid-break grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+              <div className="cv-section grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                 
                 {/* PERSONAL INFORMATION */}
-                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                <div className="cv-card print-avoid-break bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                   <h3 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2 border-b-2 border-blue-900 pb-1.5">
                     <User className="w-3.5 h-3.5 text-blue-700" />
                     PERSONAL INFORMATION
@@ -1252,7 +1252,7 @@ Date: ________________________                     _____________________________
                 </div>
 
                 {/* PERMANENT ADDRESS */}
-                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 flex flex-col justify-between">
+                <div className="cv-card print-avoid-break bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 flex flex-col justify-between">
                   <div>
                     <h3 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2 border-b-2 border-blue-900 pb-1.5 mb-3">
                       <MapPin className="w-3.5 h-3.5 text-blue-700" />
@@ -1298,7 +1298,7 @@ Date: ________________________                     _____________________________
               </div>
 
               {/* 9. DECLARATION & SIGNATURE */}
-              <div className="cv-section print-avoid-break pt-4 border-t-2 border-slate-200 space-y-4">
+              <div className="cv-section cv-signature-block print-avoid-break pt-4 border-t-2 border-slate-200 space-y-4">
                 <h3 className="text-xs sm:text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2 border-b-2 border-blue-900 pb-1.5">
                   <FileText className="w-4 h-4 text-blue-700" />
                   DECLARATION

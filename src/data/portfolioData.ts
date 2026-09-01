@@ -1,7 +1,7 @@
-import { Project, SkillCategory, SoftwareTool, EngineeringService, Testimonial, CareerMilestone, ProjectStat, EngineerInfo } from '../types';
+import { Project, SkillCategory, SoftwareTool, EngineeringService, Testimonial, CareerMilestone, ProjectStat, EngineerInfo, OfficialCVData } from '../types';
 
 import heroImg from '../assets/images/hero_civil_engineering_1786179548019.jpg';
-import profileImg from '../assets/images/civil_engineer_arif_mia_1786184741067.jpg';
+import profileImg from '../assets/images/arif_mia_formal_cv_1788290974802.jpg';
 import renderBuildingImg from '../assets/images/render_3dsmax_building_1786179580595.jpg';
 import sitePhotoImg from '../assets/images/site_construction_photo_1786179599630.jpg';
 
@@ -1233,3 +1233,131 @@ export const PROJECT_STATS: ProjectStat[] = [
     subtext: "Positive Reviews & Repeat Clients"
   }
 ];
+
+export const OFFICIAL_CV_DATA: OfficialCVData = {
+  name: "MD. ARIF MIA",
+  title: "Civil Engineer",
+  mobile: "+8801568647919",
+  email: "Ssojib909@gmail.com",
+  address: "C/O: Delowar Hossain, Vill: Taluk Esad Maytal, P.O & P.S: Pirgaccha, Dist: Rangpur",
+  photoUrl: profileImg,
+  careerObjective: "To build a successful career as a Civil Engineer by applying my technical knowledge, practical site experience, and problem-solving skills. I am committed to delivering quality work while contributing to the growth and success of the organization.",
+  confidence: "I am confident that I have the ability to work at a high place on one's own initiative. I will try my best to perform my duties according to the desired satisfaction of the authority.",
+  jobExperience: [
+    {
+      period: "April 2026 – Present",
+      role: "SITE ENGINEER",
+      company: "Conductor Site, Sreemangal",
+      responsibilities: [
+        "Supervising day-to-day construction activities.",
+        "Monitoring work quality according to drawings and specifications.",
+        "Coordinating with engineers, contractors, and labor teams.",
+        "Preparing daily progress reports.",
+        "Ensuring safety and timely project completion."
+      ]
+    },
+    {
+      period: "Feb 2025 – Mar 2026",
+      role: "SITE ENGINEER",
+      company: "Conductor Site, Dhaka",
+      responsibilities: [
+        "Supervised site construction activities.",
+        "Ensured quality control and compliance with project specifications.",
+        "Coordinated with contractors and site workers.",
+        "Maintained project schedules and material records.",
+        "Prepared daily site reports."
+      ]
+    },
+    {
+      period: "Aug 2023 – Jan 2025",
+      role: "SITE ENGINEER",
+      company: "HighLand BD",
+      location: "Transmitter Mor, Faydabad, Dakshin Khan, Dhaka-1230",
+      responsibilities: [
+        "Assisted in site supervision and construction activities.",
+        "Ensured practical execution of civil engineering works.",
+        "Prepared site documentation and progress records.",
+        "Supported engineers in quality control and measurements."
+      ]
+    }
+  ],
+  industrialAttachment: {
+    period: "Jul 2023 – Aug 2023",
+    title: "INDUSTRIAL ATTACHMENT (CIVIL)",
+    institute: "Ridon Technical Institute",
+    location: "Rangpur",
+    responsibilities: [
+      "Completed practical industrial training in Civil Trade.",
+      "Gained hands-on knowledge in civil engineering workflows and site management."
+    ]
+  },
+  education: [
+    {
+      passingYear: "Ongoing (Enrolled)",
+      degree: "M.SC. IN CIVIL ENGINEERING",
+      institute: "Higher Studies in Civil Engineering",
+      board: "Bangladesh",
+      resultLabel: "Status",
+      result: "In Progress / Ongoing"
+    },
+    {
+      passingYear: "2023",
+      degree: "DIPLOMA IN ENGINEERING (CIVIL TECHNOLOGY)",
+      institute: "Rangpur City Institute of Technology",
+      board: "Bangladesh Technical Education Board (BTEB)",
+      resultLabel: "CGPA",
+      result: "3.63 / 4.00"
+    },
+    {
+      passingYear: "2019",
+      degree: "SECONDARY SCHOOL CERTIFICATE (SSC)",
+      institute: "Chandipur Model High School, Rangpur",
+      group: "Science",
+      board: "Dinajpur",
+      resultLabel: "GPA",
+      result: "" // Blank as instructed by user
+    }
+  ],
+  skills: {
+    professional: "Site Supervision, Construction Management, Quality Control.",
+    operatingSystems: "Windows 2000 / XP / Vista / 7 / 8 / 10.",
+    applications: "MS Office, MS Excel, MS PowerPoint, MS Access, AutoCAD (Basic).",
+    internet: "Internet Browsing & E-mail Operations."
+  },
+  languages: [
+    {
+      language: "Bengali",
+      writing: "Excellent",
+      reading: "Excellent",
+      speaking: "Excellent"
+    },
+    {
+      language: "English",
+      writing: "Excellent",
+      reading: "Excellent",
+      speaking: "Normal"
+    }
+  ],
+  personalInfo: {
+    name: "MD. ARIF MIA",
+    fatherName: "Delowar Hossain",
+    motherName: "Most. Rashida Begum",
+    dateOfBirth: "20-02-2003",
+    placeOfBirth: "Rangpur",
+    sex: "Male",
+    religion: "Islam",
+    maritalStatus: "Unmarried",
+    nationality: "Bangladeshi (By Birth)",
+    bloodGroup: "O+",
+    height: "5'-8\""
+  },
+  permanentAddress: {
+    careOf: "Delowar Hossain",
+    village: "Taluk Esad Maytal",
+    postOffice: "Pirgaccha",
+    policeStation: "Pirgaccha",
+    district: "Rangpur"
+  },
+  declaration: "I am undersigned, hereby declare that I will be responsible for any wrong information provided here."
+};
+

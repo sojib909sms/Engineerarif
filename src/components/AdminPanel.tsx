@@ -697,39 +697,46 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                   </div>
 
                   {/* Right Column: Selected Inquiry View */}
-                  <div className="lg:col-span-7 bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-5 text-left">
+                  <div className="lg:col-span-7 bg-slate-950 p-5 sm:p-6 rounded-2xl border border-slate-800 space-y-6 text-left shadow-xl">
                     {selectedInquiry ? (
-                      <div className="space-y-5">
+                      <div className="space-y-6">
                         
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                        {/* Header with Title, Status & Actions */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
                           <div>
-                            <div className="flex items-center space-x-2">
-                              <span className="text-lg font-bold text-white">{selectedInquiry.name}</span>
-                              <span className="text-xs font-mono text-blue-400 bg-blue-950 px-2 py-0.5 rounded border border-blue-800">
+                            <div className="flex items-center flex-wrap gap-2">
+                              <span className="text-xl font-bold text-white tracking-tight">{selectedInquiry.name}</span>
+                              <span className="text-xs font-mono text-blue-400 bg-blue-950/80 px-2.5 py-0.5 rounded-full border border-blue-800 font-bold">
                                 {selectedInquiry.id}
                               </span>
+                              {selectedInquiry.company && (
+                                <span className="text-xs text-slate-400 font-medium">
+                                  ({selectedInquiry.company})
+                                </span>
+                              )}
                             </div>
-                            <div className="text-xs text-slate-400 font-mono mt-0.5">
-                              Submitted: {new Date(selectedInquiry.createdAt).toLocaleString()}
+                            <div className="text-xs text-slate-400 font-mono mt-1 flex items-center gap-2">
+                              <Clock className="w-3.5 h-3.5 text-slate-500" />
+                              <span>Submitted: {new Date(selectedInquiry.createdAt).toLocaleString()}</span>
                             </div>
                           </div>
 
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-2 shrink-0">
                             <select
                               value={selectedInquiry.status}
                               onChange={(e) => handleStatusChange(selectedInquiry.id, e.target.value as InquiryStatus)}
-                              className="bg-slate-900 border border-slate-700 text-xs font-mono font-bold text-white rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-blue-500"
+                              className="bg-slate-900 border border-slate-700 text-xs font-mono font-bold text-white rounded-xl px-3 py-2 focus:outline-none focus:border-blue-500 cursor-pointer shadow-sm"
                             >
-                              <option value="new">NEW / UNREAD</option>
-                              <option value="contacted">CONTACTED</option>
-                              <option value="in-progress">IN PROGRESS</option>
-                              <option value="completed">COMPLETED</option>
-                              <option value="archived">ARCHIVED</option>
+                              <option value="new">🔴 NEW / UNREAD</option>
+                              <option value="contacted">🔵 CONTACTED</option>
+                              <option value="in-progress">🟡 IN PROGRESS</option>
+                              <option value="completed">🟢 COMPLETED</option>
+                              <option value="archived">⚪ ARCHIVED</option>
                             </select>
 
                             <button
                               onClick={() => handleDeleteInquiry(selectedInquiry.id)}
-                              className="p-1.5 rounded-lg bg-rose-950 hover:bg-rose-900 text-rose-300 border border-rose-800 transition-colors"
+                              className="p-2 rounded-xl bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-800/80 transition-colors cursor-pointer"
                               title="Delete Inquiry"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -737,8 +744,45 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                           </div>
                         </div>
 
+                        {/* Quick Contact Action Strip */}
+                        <div className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                          <span className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">
+                            Direct Client Communication:
+                          </span>
+                          <div className="flex items-center flex-wrap gap-2">
+                            {selectedInquiry.phone && (
+                              <a
+                                href={`https://wa.me/${selectedInquiry.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`আসসালামু আলাইকুম ${selectedInquiry.name}! ইঞ্জিনিয়ার মো: আরিফ মিয়া বলছি। আপনার Inquiry (${selectedInquiry.id}) পেয়েছি। আপনার প্রজেক্টের ড্রয়িং/কাজের বিষয়ে আলোচনা করতে চাচ্ছি।`)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold font-mono transition-all shadow-md shadow-emerald-600/20"
+                              >
+                                <Phone className="w-3.5 h-3.5" />
+                                <span>WhatsApp Chat</span>
+                              </a>
+                            )}
+                            <a
+                              href={`mailto:${selectedInquiry.email}?subject=${encodeURIComponent(`Engineer MD Arif Mia - Response to Inquiry ${selectedInquiry.id} (${selectedInquiry.service})`)}&body=${encodeURIComponent(`Dear ${selectedInquiry.name},\n\nThank you for reaching out regarding your project: "${selectedInquiry.service}".\n\nI have reviewed your details and attachments. Let me know a convenient time to discuss your drawing package or site inspection.\n\nBest regards,\nMD Arif Mia\nCivil Engineering Designer & Site Engineer\nPhone/WhatsApp: 01568647919\nEmail: arif.mia02@uttarauniversity.edu.bd`)}`}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold font-mono transition-all shadow-md shadow-blue-600/20"
+                            >
+                              <Mail className="w-3.5 h-3.5" />
+                              <span>Email Client</span>
+                            </a>
+                            {selectedInquiry.phone && (
+                              <a
+                                href={`tel:${selectedInquiry.phone}`}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-mono font-bold transition-all"
+                              >
+                                <Phone className="w-3.5 h-3.5 text-cyan-400" />
+                                <span>Call: {selectedInquiry.phone}</span>
+                              </a>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Project Info Cards */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
-                          <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
                             <span className="text-slate-400">Email Address:</span>
                             <div className="font-bold text-white">
                               <a href={`mailto:${selectedInquiry.email}`} className="text-blue-400 hover:underline">
@@ -747,62 +791,127 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                             </div>
                           </div>
 
-                          <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
                             <span className="text-slate-400">Phone / WhatsApp:</span>
-                            <div className="font-bold text-white flex items-center justify-between">
-                              <span>{selectedInquiry.phone || 'N/A'}</span>
-                              {selectedInquiry.phone && (
-                                <a
-                                  href={`https://wa.me/${selectedInquiry.phone.replace(/[^0-9]/g, '')}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-900 text-emerald-300 border border-emerald-700"
-                                >
-                                  WhatsApp Chat
-                                </a>
-                              )}
+                            <div className="font-bold text-white">
+                              {selectedInquiry.phone || 'N/A'}
                             </div>
                           </div>
 
-                          <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
                             <span className="text-slate-400">Service Requested:</span>
                             <div className="font-bold text-white">{selectedInquiry.service}</div>
                           </div>
 
-                          <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
                             <span className="text-slate-400">Budget Range:</span>
                             <div className="font-bold text-emerald-400">{selectedInquiry.budget}</div>
                           </div>
                         </div>
 
-                        <div className="space-y-1">
-                          <span className="text-xs font-mono font-bold text-slate-400 uppercase">Project Message & Specifications:</span>
-                          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 leading-relaxed whitespace-pre-wrap font-sans">
+                        {/* Project Scope Message */}
+                        <div className="space-y-1.5">
+                          <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">
+                            Project Scope & Detailed Message:
+                          </span>
+                          <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-wrap font-sans">
                             {selectedInquiry.message}
                           </div>
                         </div>
 
-                        {selectedInquiry.attachmentName && (
-                          <div className="space-y-1">
-                            <span className="text-xs font-mono font-bold text-slate-400 uppercase">Attached Blueprint / File:</span>
-                            <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-xs">
-                              <div className="flex items-center space-x-2">
-                                <Paperclip className="w-4 h-4 text-blue-400" />
-                                <span className="font-mono text-white font-bold">{selectedInquiry.attachmentName}</span>
-                              </div>
-                              <span className="text-[10px] font-mono text-slate-400 bg-slate-950 px-2 py-1 rounded border border-slate-800">
-                                {selectedInquiry.attachmentType || 'Document / DWG'}
+                        {/* Attached File & Blueprint Details Section */}
+                        {selectedInquiry.attachmentName ? (
+                          <div className="space-y-2 pt-1 border-t border-slate-800">
+                            <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                              <span className="flex items-center gap-1.5">
+                                <Paperclip className="w-3.5 h-3.5 text-blue-400" />
+                                Client Attached File / Blueprint
                               </span>
+                              {selectedInquiry.attachmentSize && (
+                                <span className="text-emerald-400 font-normal">Size: {selectedInquiry.attachmentSize}</span>
+                              )}
+                            </span>
+
+                            <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div className="flex items-center space-x-3 min-w-0">
+                                  <div className="w-10 h-10 rounded-xl bg-blue-950 border border-blue-800 text-blue-400 flex items-center justify-center shrink-0">
+                                    <FileText className="w-5 h-5" />
+                                  </div>
+                                  <div className="min-w-0">
+                                    <div className="font-mono text-white font-bold text-sm truncate max-w-[240px] sm:max-w-xs">
+                                      {selectedInquiry.attachmentName}
+                                    </div>
+                                    <div className="text-[11px] font-mono text-slate-400">
+                                      {selectedInquiry.attachmentType || 'Engineering Drawing File'}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-2 shrink-0">
+                                  {selectedInquiry.attachmentDataUrl ? (
+                                    <a
+                                      href={selectedInquiry.attachmentDataUrl}
+                                      download={selectedInquiry.attachmentName}
+                                      className="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs font-mono flex items-center gap-1.5 transition-all shadow-md shadow-blue-600/30 cursor-pointer"
+                                    >
+                                      <Download className="w-3.5 h-3.5" />
+                                      <span>Download File</span>
+                                    </a>
+                                  ) : (
+                                    <button
+                                      onClick={() => {
+                                        // Demo mock blueprint generator for pre-seeded sample records
+                                        const content = `%DWG-ENGINEERING-BLUEPRINT-ATTACHMENT\nInquiry Ref: ${selectedInquiry.id}\nClient: ${selectedInquiry.name}\nProject Service: ${selectedInquiry.service}\nAttachment Name: ${selectedInquiry.attachmentName}\nClient Message: ${selectedInquiry.message}\nReceived: ${selectedInquiry.createdAt}\nDesignation: Structural & CAD Plan submittal for Engineer MD Arif Mia.`;
+                                        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+                                        const url = URL.createObjectURL(blob);
+                                        const link = document.createElement('a');
+                                        link.href = url;
+                                        link.download = selectedInquiry.attachmentName || 'blueprint.txt';
+                                        document.body.appendChild(link);
+                                        link.click();
+                                        document.body.removeChild(link);
+                                      }}
+                                      className="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs font-mono flex items-center gap-1.5 transition-all shadow-md shadow-blue-600/30 cursor-pointer"
+                                    >
+                                      <Download className="w-3.5 h-3.5" />
+                                      <span>Download Attachment</span>
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Image Preview if it is an image upload */}
+                              {selectedInquiry.attachmentDataUrl && (selectedInquiry.attachmentType?.startsWith('image/') || selectedInquiry.attachmentDataUrl.startsWith('data:image/')) && (
+                                <div className="mt-3 pt-3 border-t border-slate-800">
+                                  <div className="text-[11px] font-mono text-slate-400 mb-2">Image Preview:</div>
+                                  <div className="max-h-64 overflow-hidden rounded-lg border border-slate-800 bg-black/40 flex items-center justify-center p-2">
+                                    <img
+                                      src={selectedInquiry.attachmentDataUrl}
+                                      alt="Attachment preview"
+                                      className="max-h-60 object-contain rounded"
+                                    />
+                                  </div>
+                                </div>
+                              )}
                             </div>
+                          </div>
+                        ) : (
+                          <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 text-xs font-mono text-slate-400 flex items-center gap-2">
+                            <Paperclip className="w-4 h-4 text-slate-500" />
+                            <span>No file attachment was included in this submission.</span>
                           </div>
                         )}
 
-                        <div className="space-y-1 pt-2 border-t border-slate-800">
+                        {/* Internal Admin Notes */}
+                        <div className="space-y-1.5 pt-2 border-t border-slate-800">
                           <div className="flex items-center justify-between">
-                            <span className="text-xs font-mono font-bold text-slate-400 uppercase">Internal Admin Notes:</span>
+                            <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">
+                              Internal Engineering Notes (Private):
+                            </span>
                             <button
                               onClick={() => handleSaveAdminNotes(selectedInquiry.id)}
-                              className="px-2 py-0.5 bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-mono font-bold rounded cursor-pointer"
+                              className="px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-mono font-bold rounded-lg cursor-pointer transition-colors shadow"
                             >
                               Save Notes
                             </button>
@@ -811,23 +920,26 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                             rows={2}
                             value={adminNoteInput}
                             onChange={(e) => setAdminNoteInput(e.target.value)}
-                            placeholder="Add private engineering notes, site inspection dates, or fee quotes..."
-                            className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 resize-none font-mono"
+                            placeholder="Add private engineering notes, site inspection dates, drawing progress, or fee agreements..."
+                            className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 resize-none font-mono"
                           ></textarea>
                         </div>
 
-                        <div className="space-y-2 pt-2 border-t border-slate-800">
-                          <span className="text-xs font-mono font-bold text-slate-400 uppercase block">Send Direct Response:</span>
+                        {/* Send Direct Response Panel */}
+                        <div className="space-y-2.5 pt-2 border-t border-slate-800">
+                          <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider block">
+                            Dispatch Direct Response:
+                          </span>
                           
                           {selectedInquiry.replies && selectedInquiry.replies.length > 0 && (
-                            <div className="space-y-1.5 max-h-32 overflow-y-auto mb-2">
+                            <div className="space-y-2 max-h-36 overflow-y-auto mb-2 pr-1">
                               {selectedInquiry.replies.map((rep) => (
-                                <div key={rep.id} className="p-2 rounded bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300 space-y-0.5">
+                                <div key={rep.id} className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300 space-y-1">
                                   <div className="text-[10px] text-blue-400 flex items-center justify-between">
                                     <span>Sent to {rep.sentTo}</span>
                                     <span>{new Date(rep.date).toLocaleString()}</span>
                                   </div>
-                                  <div>{rep.text}</div>
+                                  <div className="text-slate-200">{rep.text}</div>
                                 </div>
                               ))}
                             </div>
@@ -839,11 +951,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                               value={replyText}
                               onChange={(e) => setReplyText(e.target.value)}
                               placeholder={`Type response to ${selectedInquiry.email}...`}
-                              className="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                              className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  handleAddReply(selectedInquiry.id);
+                                }
+                              }}
                             />
                             <button
                               onClick={() => handleAddReply(selectedInquiry.id)}
-                              className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer"
+                              className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 shadow-md shadow-blue-600/30"
                             >
                               <Send className="w-3.5 h-3.5" />
                               <span>Dispatch</span>
@@ -853,9 +971,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
 
                       </div>
                     ) : (
-                      <div className="py-20 text-center space-y-3 text-slate-400">
-                        <Eye className="w-10 h-10 text-slate-600 mx-auto" />
-                        <div className="text-sm font-bold text-slate-300">Select an inquiry to view full details and attachments.</div>
+                      <div className="py-24 text-center space-y-3 text-slate-400">
+                        <Eye className="w-12 h-12 text-slate-600 mx-auto" />
+                        <div className="text-sm font-bold text-slate-300">Select an inquiry to view full project specifications and attached CAD files.</div>
                       </div>
                     )}
                   </div>

@@ -188,11 +188,85 @@ export interface Inquiry {
   message: string;
   attachmentName?: string;
   attachmentType?: string;
-  attachmentDataUrl?: string; // For base64 preview if uploaded
+  attachmentSize?: string;
+  attachmentDataUrl?: string; // For base64 preview & download if uploaded
   status: InquiryStatus;
   adminNotes?: string;
   emailSentTo: string;
   emailSentStatus: 'Delivered' | 'Pending';
   replies?: InquiryReply[];
+}
+
+export interface OfficialCVExperience {
+  period: string;
+  role: string;
+  company: string;
+  location?: string;
+  responsibilities: string[];
+}
+
+export interface OfficialCVEducation {
+  passingYear: string;
+  degree: string;
+  institute: string;
+  board: string;
+  group?: string;
+  resultLabel: string;
+  result: string;
+}
+
+export interface OfficialCVLanguage {
+  language: string;
+  writing: string;
+  reading: string;
+  speaking: string;
+}
+
+export interface OfficialCVData {
+  name: string;
+  title: string;
+  mobile: string;
+  email: string;
+  address: string;
+  photoUrl?: string;
+  careerObjective: string;
+  confidence: string;
+  jobExperience: OfficialCVExperience[];
+  industrialAttachment: {
+    period: string;
+    title: string;
+    institute: string;
+    location: string;
+    responsibilities: string[];
+  };
+  education: OfficialCVEducation[];
+  skills: {
+    professional: string;
+    operatingSystems: string;
+    applications: string;
+    internet: string;
+  };
+  languages: OfficialCVLanguage[];
+  personalInfo: {
+    name: string;
+    fatherName: string;
+    motherName: string;
+    dateOfBirth: string;
+    placeOfBirth: string;
+    sex: string;
+    religion: string;
+    maritalStatus: string;
+    nationality: string;
+    bloodGroup: string;
+    height: string;
+  };
+  permanentAddress: {
+    careOf: string;
+    village: string;
+    postOffice: string;
+    policeStation: string;
+    district: string;
+  };
+  declaration: string;
 }
 

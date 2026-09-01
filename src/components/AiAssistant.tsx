@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, Send, X, Bot, User as UserIcon, Loader2, Phone, MessageSquare, ChevronRight, DraftingCompass, Calculator, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { Sparkles, Send, X, Bot, User as UserIcon, Loader2, Phone, MessageSquare, ChevronRight, DraftingCompass, Calculator, CheckCircle2, ShieldCheck, Paperclip } from 'lucide-react';
 import { ENGINEER_INFO } from '../data/portfolioData';
 
 interface Message {
@@ -67,10 +67,22 @@ export const AiAssistant: React.FC<AiAssistantProps> = ({
     try {
       let aiReply = '';
 
+      // Format last few conversation turns for Gemini context
+      const history = messages
+        .filter(m => m.id !== 'init-1')
+        .slice(-8)
+        .map(m => ({
+          role: m.sender === 'user' ? 'user' : 'model',
+          text: m.text
+        }));
+
       const res = await fetch('/api/ai-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: textToSend }),
+        body: JSON.stringify({
+          message: textToSend,
+          history: history
+        }),
       });
 
       if (res.ok) {
@@ -143,6 +155,18 @@ export const AiAssistant: React.FC<AiAssistantProps> = ({
           </div>
 
           <div className="flex items-center space-x-2">
+            <button
+              onClick={() => {
+                onClose();
+                const el = document.getElementById('contact');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md shadow-blue-600/20 cursor-pointer"
+            >
+              <Paperclip className="w-3.5 h-3.5" />
+              <span>Submit Drawing & Quote</span>
+            </button>
+
             <a
               href="https://wa.me/8801568647919"
               target="_blank"

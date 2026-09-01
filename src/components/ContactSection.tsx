@@ -17,7 +17,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
     budget: '$100 - $500',
     message: '',
     attachedFileName: '',
-    attachmentType: ''
+    attachmentType: '',
+    attachmentSize: '',
+    attachmentDataUrl: ''
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -38,12 +40,31 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setFormData(prev => ({ 
-        ...prev, 
-        attachedFileName: file.name,
-        attachmentType: file.type || 'Document / Blueprint'
-      }));
+      const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+      const formattedSize = file.size > 1024 * 1024 ? `${sizeInMB} MB` : `${Math.round(file.size / 1024)} KB`;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        setFormData(prev => ({ 
+          ...prev, 
+          attachedFileName: file.name,
+          attachmentType: file.type || 'application/octet-stream',
+          attachmentSize: formattedSize,
+          attachmentDataUrl: (reader.result as string) || ''
+        }));
+      };
+      reader.readAsDataURL(file);
     }
+  };
+
+  const handleRemoveAttachment = () => {
+    setFormData(prev => ({
+      ...prev,
+      attachedFileName: '',
+      attachmentType: '',
+      attachmentSize: '',
+      attachmentDataUrl: ''
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -60,7 +81,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
         budget: formData.budget,
         message: formData.message,
         attachmentName: formData.attachedFileName,
-        attachmentType: formData.attachmentType
+        attachmentType: formData.attachmentType,
+        attachmentSize: formData.attachmentSize,
+        attachmentDataUrl: formData.attachmentDataUrl
       });
 
       setCreatedRefId(createdInquiry.id);
@@ -382,25 +405,48 @@ NOTES:
 
                 {/* File Attachment Dropzone */}
                 <div className="space-y-1">
-                  <label className="text-xs font-mono font-medium text-slate-300">Attach CAD Sketch or Hand Drawing (Optional)</label>
-                  <div className="relative border-2 border-dashed border-slate-800 hover:border-blue-500 rounded-xl p-4 text-center bg-slate-950/60 transition-colors">
-                    <input
-                      type="file"
-                      onChange={handleFileChange}
-                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                    />
-                    <div className="flex flex-col items-center justify-center space-y-1">
-                      <Paperclip className="w-5 h-5 text-blue-400" />
-                      <span className="text-xs text-slate-300 font-medium">
-                        {formData.attachedFileName ? (
-                          <span className="text-emerald-400 font-bold font-mono">Attached: {formData.attachedFileName}</span>
-                        ) : (
-                          'Click or drop DWG, DXF, JPG, PNG or PDF files here'
-                        )}
-                      </span>
-                      <span className="text-[11px] text-slate-500 font-mono">Up to 50 MB file size allowed</span>
+                  <label className="text-xs font-mono font-medium text-slate-300">Attach CAD Sketch, Floor Plan or Hand Drawing (Optional)</label>
+                  {formData.attachedFileName ? (
+                    <div className="p-3.5 rounded-xl bg-slate-950 border border-emerald-500/50 flex items-center justify-between gap-3 shadow-inner">
+                      <div className="flex items-center space-x-3 min-w-0">
+                        <div className="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                          <Paperclip className="w-4 h-4" />
+                        </div>
+                        <div className="min-w-0 text-left">
+                          <div className="text-xs font-bold text-white truncate max-w-[220px] sm:max-w-xs font-mono">
+                            {formData.attachedFileName}
+                          </div>
+                          <div className="text-[11px] text-emerald-400 font-mono flex items-center gap-2">
+                            <span>Ready to upload</span>
+                            {formData.attachmentSize && <span>• {formData.attachmentSize}</span>}
+                          </div>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={handleRemoveAttachment}
+                        className="px-2.5 py-1 text-xs rounded-lg bg-rose-950 hover:bg-rose-900 text-rose-300 border border-rose-800 transition-colors cursor-pointer shrink-0 font-mono"
+                      >
+                        Remove
+                      </button>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="relative border-2 border-dashed border-slate-800 hover:border-blue-500 rounded-xl p-4 text-center bg-slate-950/60 transition-colors">
+                      <input
+                        type="file"
+                        onChange={handleFileChange}
+                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                      />
+                      <div className="flex flex-col items-center justify-center space-y-1">
+                        <Paperclip className="w-5 h-5 text-blue-400" />
+                        <span className="text-xs text-slate-300 font-medium">
+                          Click or drop DWG, DXF, JPG, PNG or PDF files here
+                        </span>
+                        <span className="text-[11px] text-slate-500 font-mono">Full file & specifications will be sent directly to Admin Panel</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <button

@@ -508,9 +508,56 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
     }
   };
 
-  // Clean native print handler that leverages optimized print stylesheet
-  const handlePrint = () => {
-    window.print();
+  // Clean, dedicated standalone A4 Print generation with isolated white background
+  const handlePrint = async () => {
+    try {
+      const photoDataUrl = await getBase64ImageFromUrl(cv.photoUrl);
+      const printHtml = generateCvDocumentHtml(photoDataUrl);
+
+      // Clean up previous print iframe if any
+      const existingIframe = document.getElementById('cv-print-iframe');
+      if (existingIframe && existingIframe.parentNode) {
+        existingIframe.parentNode.removeChild(existingIframe);
+      }
+
+      const iframe = document.createElement('iframe');
+      iframe.id = 'cv-print-iframe';
+      iframe.style.position = 'fixed';
+      iframe.style.right = '0';
+      iframe.style.bottom = '0';
+      iframe.style.width = '10px';
+      iframe.style.height = '10px';
+      iframe.style.border = '0';
+      iframe.style.opacity = '0.01';
+      iframe.style.pointerEvents = 'none';
+      document.body.appendChild(iframe);
+
+      const doc = iframe.contentWindow?.document;
+      if (!doc) {
+        window.print();
+        return;
+      }
+
+      doc.open();
+      doc.write(printHtml);
+      doc.close();
+
+      setTimeout(() => {
+        try {
+          iframe.contentWindow?.focus();
+          iframe.contentWindow?.print();
+        } catch (err) {
+          window.print();
+        }
+        setTimeout(() => {
+          if (iframe.parentNode) {
+            iframe.parentNode.removeChild(iframe);
+          }
+        }, 3000);
+      }, 400);
+    } catch (e) {
+      window.print();
+    }
   };
 
   // Clean Plain-Text Download with UTF-8 BOM

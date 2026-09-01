@@ -17,8 +17,11 @@
 
   html,
   body,
-  #root {
+  #root,
+  #root > div,
+  .min-h-screen {
     background: #ffffff !important;
+    background-color: #ffffff !important;
     color: #0f172a !important;
     height: auto !important;
     min-height: auto !important;

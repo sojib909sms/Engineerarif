@@ -1,1 +1,111 @@
 @import "tailwindcss";
+
+/* Comprehensive Print Optimization for Mobile, Tablet & Desktop */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm 8mm;
+  }
+
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-sizing: border-box !important;
+  }
+
+  html,
+  body,
+  #root {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    position: static !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide all background website sections and fixed UI components */
+  .no-print,
+  nav,
+  main,
+  footer,
+  aside,
+  button,
+  .cv-modal-header,
+  .fixed.bottom-6.right-6 {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Keep the CV Modal visible and expanded to full natural height without overlays or clipping */
+  .cv-modal-overlay {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    z-index: auto !important;
+  }
+
+  .cv-modal-card {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  .cv-printable-sheet {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  .cv-paper-box {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 0 !important;
+  }
+
+  /* Avoid cutting cards or sections across page boundaries */
+  .print-avoid-break,
+  .cv-section,
+  .cv-card,
+  .cv-header-banner {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Ensure text is high-contrast and legible */
+  h1, h2, h3, h4, h5, h6, p, span, strong, td, th, li {
+    text-rendering: geometricPrecision;
+  }
+}
+

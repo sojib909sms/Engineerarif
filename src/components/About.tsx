@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Award, BookOpen, GraduationCap, Building2, CheckCircle2, ShieldCheck, Briefcase, Calendar, MapPin, Download } from 'lucide-react';
-import { ENGINEER_INFO, CAREER_MILESTONES } from '../data/portfolioData';
+import { CAREER_MILESTONES } from '../data/portfolioData';
+import { portfolioStore } from '../services/portfolioStore';
+import { EngineerInfo } from '../types';
 
 interface AboutProps {
   onOpenResume: () => void;
@@ -8,6 +10,14 @@ interface AboutProps {
 
 export const About: React.FC<AboutProps> = ({ onOpenResume }) => {
   const [selectedMilestone, setSelectedMilestone] = useState<number>(0);
+  const [engineerInfo, setEngineerInfo] = useState<EngineerInfo>(portfolioStore.getEngineerInfo());
+
+  useEffect(() => {
+    const unsubscribe = portfolioStore.subscribe(() => {
+      setEngineerInfo(portfolioStore.getEngineerInfo());
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <section id="about" className="py-20 bg-slate-50 text-slate-900 border-b border-slate-200">
@@ -20,7 +30,7 @@ export const About: React.FC<AboutProps> = ({ onOpenResume }) => {
             Engineering Background & Specialization
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            About {ENGINEER_INFO.name}
+            About {engineerInfo.name}
           </h2>
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
             Specializing in AutoCAD 2D & 3D drafting, 3ds Max architectural visualization, and practical construction site execution.
@@ -39,12 +49,10 @@ export const About: React.FC<AboutProps> = ({ onOpenResume }) => {
             
             <div className="text-slate-700 leading-relaxed text-sm sm:text-base space-y-4">
               <p>
-                I am a dedicated <strong>Civil Engineering Designer & Construction Site Engineer</strong> with over <strong>3+ years of practical experience</strong>. Among all my technical skills, my strongest expertise lies in <strong>Construction Site Engineering</strong>—managing rebar checking, structural column & beam placement, foundation layouts, and real-time site execution.
-              </p>
-              <p>
-                In addition to my site engineering mastery, I specialize in <strong>AutoCAD 2D & 3D drafting</strong> and <strong>3ds Max photorealistic architectural visualization</strong>. I am currently pursuing my <strong>M.Sc. in Civil Engineering at North South University (NSU)</strong>, having completed my <strong>B.Sc. at Uttara University</strong> and <strong>Diploma at Rangpur City Institute of Technology (RCIT)</strong>.
+                {engineerInfo.bioSummary || "I am a dedicated Civil Engineering Designer & Construction Site Engineer with over 3+ years of practical experience. Specializing in AutoCAD 2D/3D drafting and 3ds Max architectural rendering."}
               </p>
             </div>
+
 
             {/* Core Values / Pillars */}
             <div className="pt-2">
@@ -107,7 +115,7 @@ export const About: React.FC<AboutProps> = ({ onOpenResume }) => {
               </h3>
 
               <div className="space-y-4">
-                {ENGINEER_INFO.education.map((edu, index) => (
+                {(engineerInfo.education || CAREER_MILESTONES).map((edu, index) => (
                   <div key={index} className="p-3.5 rounded-xl bg-blue-50/50 border border-blue-100 space-y-1">
                     <div className="flex items-center justify-between">
                       <h4 className="text-sm font-bold text-slate-900">{edu.degree}</h4>
@@ -128,7 +136,7 @@ export const About: React.FC<AboutProps> = ({ onOpenResume }) => {
               </h3>
 
               <ul className="space-y-2.5 text-xs sm:text-sm text-slate-300">
-                {ENGINEER_INFO.certifications.map((cert, i) => (
+                {(engineerInfo.certifications || []).map((cert, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <ShieldCheck className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                     <span>{cert}</span>

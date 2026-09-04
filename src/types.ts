@@ -153,7 +153,7 @@ export interface ProjectStat {
 
 export type InquiryStatus = 'new' | 'contacted' | 'in-progress' | 'completed' | 'archived';
 
-export type UserRole = 'admin' | 'user';
+export type UserRole = 'admin' | 'user' | 'client';
 
 export interface User {
   id: string;
@@ -167,6 +167,11 @@ export interface User {
   company?: string;
   title?: string;
   bio?: string;
+  location?: string;
+  address?: string;
+  savedProjectIds?: string[];
+  lastLogin?: string;
+  website?: string;
 }
 
 export interface InquiryReply {

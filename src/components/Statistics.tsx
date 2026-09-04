@@ -1,9 +1,18 @@
-import React from 'react';
-import { PROJECT_STATS } from '../data/portfolioData';
+import React, { useState, useEffect } from 'react';
+import { portfolioStore } from '../services/portfolioStore';
 import { IconHelper } from './IconHelper';
 import { TrendingUp, ShieldCheck, CheckCircle2, Award, Building2 } from 'lucide-react';
 
 export const Statistics: React.FC = () => {
+  const [stats, setStats] = useState(portfolioStore.getProjectStats());
+
+  useEffect(() => {
+    const unsubscribe = portfolioStore.subscribe(() => {
+      setStats(portfolioStore.getProjectStats());
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <section className="py-16 bg-slate-950 text-white border-b border-slate-800 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,7 +30,7 @@ export const Statistics: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PROJECT_STATS.map((stat) => (
+            {stats.map((stat) => (
               <div
                 key={stat.id}
                 className="bg-slate-900/90 p-6 rounded-2xl border border-slate-800 hover:border-blue-500/40 transition-all text-center space-y-3 shadow-md"

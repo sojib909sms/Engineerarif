@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
-import { SOFTWARE_TOOLS } from '../data/portfolioData';
+import React, { useState, useEffect } from 'react';
+import { portfolioStore } from '../services/portfolioStore';
 import { IconHelper } from './IconHelper';
 import { Monitor, Layers, Check, ExternalLink, Command, Cpu, ChevronDown } from 'lucide-react';
 
 export const SoftwareShowcase: React.FC = () => {
-  const [activeToolId, setActiveToolId] = useState<string>(SOFTWARE_TOOLS[0].id);
+  const [tools, setTools] = useState(portfolioStore.getSoftwareTools());
+  const [activeToolId, setActiveToolId] = useState<string>(tools[0]?.id || 'soft-01');
   const [showAllTools, setShowAllTools] = useState(false);
 
-  const visibleTools = showAllTools ? SOFTWARE_TOOLS : SOFTWARE_TOOLS.slice(0, 3);
+  useEffect(() => {
+    const unsubscribe = portfolioStore.subscribe(() => {
+      const updated = portfolioStore.getSoftwareTools();
+      setTools(updated);
+    });
+    return unsubscribe;
+  }, []);
+
+  const visibleTools = showAllTools ? tools : tools.slice(0, 3);
+
 
   return (
     <section id="software" className="py-20 bg-slate-950 text-white border-b border-slate-800">
@@ -101,14 +111,14 @@ export const SoftwareShowcase: React.FC = () => {
           </div>
 
           {/* Toggle View All / Show Less Software Tools Button */}
-          {SOFTWARE_TOOLS.length > 3 && (
+          {tools.length > 3 && (
             <div className="flex justify-center pt-2">
               <button
                 onClick={() => setShowAllTools(!showAllTools)}
                 className="inline-flex items-center space-x-2 px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm sm:text-base shadow-lg shadow-blue-600/30 transition-all transform hover:-translate-y-0.5 border border-blue-400/40 cursor-pointer"
               >
                 <Monitor className="w-5 h-5 text-blue-200" />
-                <span>{showAllTools ? 'Show Less Software' : `View All (${SOFTWARE_TOOLS.length} Software Tools)`}</span>
+                <span>{showAllTools ? 'Show Less Software' : `View All (${tools.length} Software Tools)`}</span>
                 <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${showAllTools ? 'rotate-180' : ''}`} />
               </button>
             </div>

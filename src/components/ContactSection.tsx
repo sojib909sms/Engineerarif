@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Send, Paperclip, FileText, CheckCircle2, ShieldCheck, Download, ExternalLink, Clock, MessageSquare, AlertCircle } from 'lucide-react';
-import { ENGINEER_INFO } from '../data/portfolioData';
+import { portfolioStore } from '../services/portfolioStore';
+import { EngineerInfo } from '../types';
 import { inquiryStore } from '../services/inquiryStore';
 
 interface ContactSectionProps {
@@ -8,7 +9,17 @@ interface ContactSectionProps {
 }
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedService }) => {
+  const [engineerInfo, setEngineerInfo] = useState<EngineerInfo>(portfolioStore.getEngineerInfo());
+
+  useEffect(() => {
+    const unsubscribe = portfolioStore.subscribe(() => {
+      setEngineerInfo(portfolioStore.getEngineerInfo());
+    });
+    return unsubscribe;
+  }, []);
+
   const [formData, setFormData] = useState({
+
     name: '',
     email: '',
     phone: '',
@@ -129,7 +140,7 @@ NOTES:
             Get In Touch & Project Consultation
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Contact {ENGINEER_INFO.name}
+            Contact {engineerInfo.name}
           </h2>
           <p className="text-base sm:text-lg text-slate-300">
             Send your project blueprints, architectural sketches, floor plans, or 3D visualization requests for a prompt quote.
@@ -154,8 +165,8 @@ NOTES:
                   <Mail className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                   <div>
                     <span className="text-xs text-slate-400 font-mono block">Direct Email:</span>
-                    <a href={`mailto:${ENGINEER_INFO.email}`} className="font-semibold text-white hover:text-blue-400 transition-colors">
-                      {ENGINEER_INFO.email}
+                    <a href={`mailto:${engineerInfo.email}`} className="font-semibold text-white hover:text-blue-400 transition-colors">
+                      {engineerInfo.email}
                     </a>
                   </div>
                 </div>
@@ -165,11 +176,11 @@ NOTES:
                   <div className="w-full">
                     <span className="text-xs text-slate-400 font-mono block">Phone & WhatsApp:</span>
                     <div className="flex items-center justify-between gap-2">
-                      <a href={`tel:${ENGINEER_INFO.phone}`} className="font-semibold text-white hover:text-blue-400 transition-colors">
-                        {ENGINEER_INFO.phone}
+                      <a href={`tel:${engineerInfo.phone}`} className="font-semibold text-white hover:text-blue-400 transition-colors">
+                        {engineerInfo.phone}
                       </a>
                       <a
-                        href={ENGINEER_INFO.social.whatsapp}
+                        href={engineerInfo.social?.whatsapp || `https://wa.me/${engineerInfo.phone?.replace(/[^0-9]/g, '')}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-2.5 py-0.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded font-mono shadow transition-colors"
@@ -185,16 +196,16 @@ NOTES:
                   <div className="w-full space-y-1">
                     <span className="text-xs text-slate-400 font-mono block">Social Profiles:</span>
                     <div className="flex flex-wrap gap-2 text-xs font-semibold">
-                      <a href={ENGINEER_INFO.social.facebook} target="_blank" rel="noopener noreferrer" className="px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 hover:text-white border border-blue-700/50 transition-colors">
+                      <a href={engineerInfo.social?.facebook || '#'} target="_blank" rel="noopener noreferrer" className="px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 hover:text-white border border-blue-700/50 transition-colors">
                         Facebook
                       </a>
-                      <a href={ENGINEER_INFO.social.linkedin} target="_blank" rel="noopener noreferrer" className="px-2 py-0.5 rounded bg-blue-950 text-blue-400 hover:text-white border border-blue-800 transition-colors">
+                      <a href={engineerInfo.social?.linkedin || '#'} target="_blank" rel="noopener noreferrer" className="px-2 py-0.5 rounded bg-blue-950 text-blue-400 hover:text-white border border-blue-800 transition-colors">
                         LinkedIn
                       </a>
-                      <a href={ENGINEER_INFO.social.twitter} target="_blank" rel="noopener noreferrer" className="px-2 py-0.5 rounded bg-sky-950 text-sky-300 hover:text-white border border-sky-800 transition-colors">
+                      <a href={engineerInfo.social?.twitter || '#'} target="_blank" rel="noopener noreferrer" className="px-2 py-0.5 rounded bg-sky-950 text-sky-300 hover:text-white border border-sky-800 transition-colors">
                         Twitter (X)
                       </a>
-                      <a href={ENGINEER_INFO.social.instagram} target="_blank" rel="noopener noreferrer" className="px-2 py-0.5 rounded bg-pink-950 text-pink-300 hover:text-white border border-pink-800 transition-colors">
+                      <a href={engineerInfo.social?.instagram || '#'} target="_blank" rel="noopener noreferrer" className="px-2 py-0.5 rounded bg-pink-950 text-pink-300 hover:text-white border border-pink-800 transition-colors">
                         Instagram
                       </a>
                     </div>
@@ -205,7 +216,7 @@ NOTES:
                   <MapPin className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                   <div>
                     <span className="text-xs text-slate-400 font-mono block">Location:</span>
-                    <span className="font-semibold text-white">{ENGINEER_INFO.location}</span>
+                    <span className="font-semibold text-white">{engineerInfo.location}</span>
                   </div>
                 </div>
               </div>
@@ -459,7 +470,7 @@ NOTES:
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      <span>Submit Inquiry to {ENGINEER_INFO.name}</span>
+                      <span>Submit Inquiry to {engineerInfo.name}</span>
                     </>
                   )}
                 </button>

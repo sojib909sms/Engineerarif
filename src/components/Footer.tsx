@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Compass, ShieldCheck, ArrowUp, Mail, Phone, MapPin, FileText, Send, Award, Heart, ExternalLink, LogIn, User as UserIcon } from 'lucide-react';
-import { ENGINEER_INFO } from '../data/portfolioData';
-import { User } from '../types';
+import { portfolioStore } from '../services/portfolioStore';
+import { User, EngineerInfo } from '../types';
 
 interface FooterProps {
   onOpenResume: () => void;
@@ -18,6 +18,15 @@ export const Footer: React.FC<FooterProps> = ({
   currentUser, 
   onSelectServiceForQuote 
 }) => {
+  const [engineerInfo, setEngineerInfo] = useState<EngineerInfo>(portfolioStore.getEngineerInfo());
+
+  useEffect(() => {
+    const unsubscribe = portfolioStore.subscribe(() => {
+      setEngineerInfo(portfolioStore.getEngineerInfo());
+    });
+    return unsubscribe;
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -37,7 +46,7 @@ export const Footer: React.FC<FooterProps> = ({
               </div>
               <div>
                 <div className="font-bold text-lg tracking-tight text-white flex items-center gap-1.5">
-                  {ENGINEER_INFO.name}
+                  {engineerInfo.name}
                   <span className="text-xs bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded border border-blue-400/30 font-medium">CAD & 3D</span>
                 </div>
                 <p className="text-xs text-slate-400 font-mono uppercase">Civil Engineering Designer</p>
@@ -50,7 +59,7 @@ export const Footer: React.FC<FooterProps> = ({
 
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <a
-                href={ENGINEER_INFO.social.whatsapp}
+                href={engineerInfo.social?.whatsapp || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-2.5 py-1 rounded bg-emerald-950 border border-emerald-800 text-xs font-semibold text-emerald-400 hover:text-white transition-colors"
@@ -58,7 +67,7 @@ export const Footer: React.FC<FooterProps> = ({
                 WhatsApp
               </a>
               <a
-                href={ENGINEER_INFO.social.linkedin}
+                href={engineerInfo.social?.linkedin || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-2.5 py-1 rounded bg-blue-950 border border-blue-800 text-xs font-semibold text-blue-300 hover:text-white transition-colors"
@@ -66,7 +75,7 @@ export const Footer: React.FC<FooterProps> = ({
                 LinkedIn
               </a>
               <a
-                href={ENGINEER_INFO.social.facebook}
+                href={engineerInfo.social?.facebook || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-2.5 py-1 rounded bg-blue-950 border border-blue-800 text-xs font-semibold text-blue-300 hover:text-white transition-colors"
@@ -74,7 +83,7 @@ export const Footer: React.FC<FooterProps> = ({
                 Facebook
               </a>
               <a
-                href={ENGINEER_INFO.social.twitter}
+                href={engineerInfo.social?.twitter || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-2.5 py-1 rounded bg-sky-950 border border-sky-800 text-xs font-semibold text-sky-300 hover:text-white transition-colors"
@@ -82,7 +91,7 @@ export const Footer: React.FC<FooterProps> = ({
                 Twitter (X)
               </a>
               <a
-                href={ENGINEER_INFO.social.instagram}
+                href={engineerInfo.social?.instagram || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-2.5 py-1 rounded bg-pink-950 border border-pink-800 text-xs font-semibold text-pink-300 hover:text-white transition-colors"
@@ -158,7 +167,7 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-300 font-mono">
           <div className="text-center sm:text-left">
-            © {new Date().getFullYear()} {ENGINEER_INFO.name}. Civil Engineering Designer Portfolio.
+            © {new Date().getFullYear()} {engineerInfo.name}. Civil Engineering Designer Portfolio.
           </div>
 
           <div className="flex flex-col items-center sm:items-end gap-3">
@@ -173,7 +182,7 @@ export const Footer: React.FC<FooterProps> = ({
 
             {/* Developed by MD ARIF - Facebook Link directly in the red circled area */}
             <a
-              href={ENGINEER_INFO.social.facebook}
+              href={engineerInfo.social?.facebook || '#'}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-slate-300 hover:text-blue-300 transition-all bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-full border border-slate-800 hover:border-blue-500/50 shadow-md group cursor-pointer"

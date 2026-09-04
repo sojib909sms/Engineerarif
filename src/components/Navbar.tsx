@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, FileText, Send, Building2, Phone, Mail, Award, Compass, ShieldCheck, LogIn, UserPlus, LogOut, User as UserIcon, Sparkles, Bot } from 'lucide-react';
-import { ENGINEER_INFO } from '../data/portfolioData';
-import { User } from '../types';
+import { portfolioStore } from '../services/portfolioStore';
+import { User, EngineerInfo } from '../types';
+import { authStore } from '../services/authStore';
 
 interface NavbarProps {
   onOpenResume: () => void;
@@ -27,8 +28,17 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const [engineerInfo, setEngineerInfo] = useState<EngineerInfo>(portfolioStore.getEngineerInfo());
 
-  const isAdminUser = currentUser?.email?.toLowerCase() === 'arif.mia02@uttarauniversity.edu.bd';
+  useEffect(() => {
+    const unsubscribe = portfolioStore.subscribe(() => {
+      setEngineerInfo(portfolioStore.getEngineerInfo());
+    });
+    return unsubscribe;
+  }, []);
+
+  const isAdminUser = authStore.isAdmin(currentUser);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -94,13 +104,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div>
               <div className="font-bold text-base sm:text-lg tracking-tight flex items-center gap-1.5 text-white">
-                MD Arif Mia
+                {engineerInfo.name}
                 <span className="text-xs bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded border border-blue-400/30 font-medium">
                   CAD & 3D
                 </span>
               </div>
               <p className="text-xs text-slate-400 tracking-wide font-mono uppercase">
-                Civil Engineering Designer
+                {engineerInfo.title?.split('|')[0] || 'Civil Engineering Designer'}
               </p>
             </div>
           </a>

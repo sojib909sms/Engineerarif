@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
-import { SKILLS_CATEGORIES } from '../data/portfolioData';
+import React, { useState, useEffect } from 'react';
+import { portfolioStore } from '../services/portfolioStore';
 import { IconHelper } from './IconHelper';
 import { Cpu, Award, CheckCircle2, ChevronRight, Layers, Sparkles, Building2 } from 'lucide-react';
 
 export const TechnicalSkills: React.FC = () => {
+  const [categories, setCategories] = useState(portfolioStore.getSkillsCategories());
+
+  useEffect(() => {
+    const unsubscribe = portfolioStore.subscribe(() => {
+      setCategories(portfolioStore.getSkillsCategories());
+    });
+    return unsubscribe;
+  }, []);
+
+  const skills = categories[0]?.skills || [];
+
   return (
     <section id="skills" className="py-20 bg-slate-900 text-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -24,7 +35,7 @@ export const TechnicalSkills: React.FC = () => {
 
         {/* Skill Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SKILLS_CATEGORIES[0].skills.map((skill, index) => (
+          {skills.map((skill, index) => (
             <div
               key={index}
               className="bg-slate-950/80 p-5 sm:p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all hover:translate-y-[-2px] space-y-4 shadow-lg backdrop-blur-sm flex flex-col justify-between"

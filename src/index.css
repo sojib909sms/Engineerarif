@@ -174,3 +174,22 @@
   }
 }
 
+/* Custom Interactive Robot & Lamp Animations */
+@keyframes robotBob {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.6deg);
+  }
+}
+
+@keyframes lampGlowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0, 234, 175, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(0, 234, 175, 0.85);
+  }
+}
+

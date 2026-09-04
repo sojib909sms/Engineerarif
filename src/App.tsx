@@ -196,6 +196,7 @@ export default function App() {
         currentUser={currentUser}
         onUserUpdate={(updated) => setCurrentUser(updated)}
         onOpenAdmin={() => setIsAdminPanelOpen(true)}
+        onLogout={handleLogout}
       />
 
       {/* Admin Panel Dashboard for MD Arif Mia */}

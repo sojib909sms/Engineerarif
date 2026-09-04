@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Award, ArrowRight, Download, Layers, Building2, Sparkles, CheckCircle2, ChevronRight, FileCode2, Camera, Cpu } from 'lucide-react';
-import { ENGINEER_INFO } from '../data/portfolioData';
+import { portfolioStore } from '../services/portfolioStore';
+import { EngineerInfo } from '../types';
 import { AnimatedRoleTicker } from './AnimatedRoleTicker';
 
 interface HeroProps {
@@ -9,12 +10,21 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onOpenResume, onSelectCategory }) => {
+  const [info, setInfo] = useState<EngineerInfo>(portfolioStore.getEngineerInfo());
+
+  useEffect(() => {
+    const unsubscribe = portfolioStore.subscribe(() => {
+      setInfo(portfolioStore.getEngineerInfo());
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <section id="hero" className="relative min-h-screen bg-slate-950 text-white pt-28 pb-16 lg:pt-36 lg:pb-24 overflow-hidden flex items-center">
       {/* Background Hero Image with Deep Blue Gradient Overlay */}
       <div className="absolute inset-0 z-0 opacity-20">
         <img
-          src={ENGINEER_INFO.heroBgImage}
+          src={info.heroBgImage}
           alt="Civil Engineering Blueprint Background"
           className="w-full h-full object-cover filter brightness-75 contrast-125"
           referrerPolicy="no-referrer"
@@ -43,27 +53,27 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, onSelectCategory }) =>
               <ShieldCheck className="w-4 h-4 text-blue-400 shrink-0" />
               <span className="font-semibold text-white">Civil Engineering Designer & 3D Artist</span>
               <span className="text-slate-400 hidden sm:inline">|</span>
-              <span className="text-blue-300 hidden sm:inline font-mono">{ENGINEER_INFO.location}</span>
+              <span className="text-blue-300 hidden sm:inline font-mono">{info.location}</span>
             </div>
 
             {/* Main Name & Animated Role Ticker */}
             <div className="space-y-3">
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight font-sans">
-                {ENGINEER_INFO.name}
+                {info.name}
               </h1>
               
               {/* Advanced Animated CAD Role Ticker Component */}
-              <AnimatedRoleTicker roles={ENGINEER_INFO.roles} />
+              <AnimatedRoleTicker roles={info.roles && info.roles.length > 0 ? info.roles : ["Civil Engineer"]} />
             </div>
 
             {/* Short Introduction */}
             <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl font-normal">
-              {ENGINEER_INFO.shortIntro}
+              {info.shortIntro}
             </p>
 
             {/* Key Skill Roles Badges */}
             <div className="flex flex-wrap gap-2 pt-1">
-              {ENGINEER_INFO.roles.slice(0, 8).map((role, idx) => (
+              {(info.roles || []).slice(0, 8).map((role, idx) => (
                 <span
                   key={idx}
                   className="px-2.5 py-1 rounded-md bg-slate-900/90 border border-slate-800 text-xs font-medium text-slate-300"
@@ -79,15 +89,15 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, onSelectCategory }) =>
             {/* Highlights Pills */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
               <div className="bg-slate-900/80 border border-slate-800 p-3 rounded-xl backdrop-blur-sm">
-                <div className="text-2xl sm:text-3xl font-extrabold text-blue-400 font-mono">{ENGINEER_INFO.projectsCompleted}+</div>
+                <div className="text-2xl sm:text-3xl font-extrabold text-blue-400 font-mono">{info.projectsCompleted}+</div>
                 <div className="text-xs text-slate-400 font-medium">Projects Delivered</div>
               </div>
               <div className="bg-slate-900/80 border border-slate-800 p-3 rounded-xl backdrop-blur-sm">
-                <div className="text-2xl sm:text-3xl font-extrabold text-blue-400 font-mono">{ENGINEER_INFO.yearsExperience}+ Years</div>
+                <div className="text-2xl sm:text-3xl font-extrabold text-blue-400 font-mono">{info.yearsExperience}+ Years</div>
                 <div className="text-xs text-slate-400 font-medium">Practical Experience</div>
               </div>
               <div className="col-span-2 sm:col-span-1 bg-slate-900/80 border border-slate-800 p-3 rounded-xl backdrop-blur-sm">
-                <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono">{ENGINEER_INFO.designAccuracy}</div>
+                <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono">{info.designAccuracy}</div>
                 <div className="text-xs text-slate-400 font-medium">Design Accuracy</div>
               </div>
             </div>
@@ -176,8 +186,8 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, onSelectCategory }) =>
                 {/* Profile Header Image */}
                 <div className="relative rounded-xl overflow-hidden aspect-[4/3] group border border-slate-800 shadow-md">
                   <img
-                    src={ENGINEER_INFO.profileImage}
-                    alt={ENGINEER_INFO.name}
+                    src={info.profileImage}
+                    alt={info.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     referrerPolicy="no-referrer"
                   />
@@ -191,10 +201,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, onSelectCategory }) =>
 
                   <div className="absolute bottom-3 left-3 right-3 text-left">
                     <div className="text-white font-bold text-base flex items-center justify-between">
-                      <span>{ENGINEER_INFO.name}</span>
+                      <span>{info.name}</span>
                       <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" title="Available for Design Projects"></span>
                     </div>
-                    <p className="text-xs text-slate-300 font-mono">Civil Engineering Designer</p>
+                    <p className="text-xs text-slate-300 font-mono">{info.title.split('|')[0] || 'Civil Engineering Designer'}</p>
                   </div>
                 </div>
 
@@ -236,3 +246,4 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, onSelectCategory }) =>
     </section>
   );
 };
+
